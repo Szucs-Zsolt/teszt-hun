@@ -92,6 +92,7 @@ class Foablak(wx.Frame):
                 tabla_neve = self.tabla.GetCellValue(i,1)
                 sorok =  self.db.tabla_tartalma(tabla_neve)
                 csv_kiiro(file_neve=tabla_neve+".csv", sorok=sorok)
+                self.tabla.SetCellValue(i,0,"")
 
     def tabla_kattintas_handler(self, event):
         """

@@ -3,7 +3,7 @@ import mysql.connector
 class Adatbazis:
     def __init__(self, config_file):
         """
-        Megnyitja és beolvassa a konfigurációs file-ból a MySQL/MariaDB
+        Megnyitja és beolvassa a konfigurációs fájlból a MySQL/MariaDB
         szerveren lévő adatbázis eléréséhez szükséges adatokat. 
         Ha nem sikerül, akkor kilép.
 
@@ -24,7 +24,7 @@ class Adatbazis:
                 self.user = f.readline().replace("\n", "")
                 self.password = f.readline().replace("\n", "")
         except FileNotFoundError:
-            print(f"Hiányzó konfigurációs file: {config_file}")
+            print(f"Hiányzó konfigurációs fájl: {config_file}")
             exit()
         except Exception as e:
             print("Hiba: ", e)    

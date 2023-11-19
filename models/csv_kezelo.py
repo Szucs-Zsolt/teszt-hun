@@ -2,9 +2,9 @@ import csv
 
 def csv_kiiro(file_neve, sorok):
     """
-    Kiírja a kapott sorok tartalmát file-ba, csv formában.
+    Kiírja a kapott sorok tartalmát fájlba, csv formában.
     Paraméterek:
-        file_neve: ebbe a file-ba írja ki
+        file_neve: ebbe a fájlba írja ki
         sorok: ezeket a sorokat (stringeket tartalmazó list)
     """
     try:

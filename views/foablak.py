@@ -86,13 +86,26 @@ class Foablak(wx.Frame):
         """
         Beolvassa bejelölt táblák a tartalmát és egyenként kiírja csv formában.
         """
+        sikerult = True
         for i in range(self.tabla.GetNumberRows()):
             # A bejelölt sorokból kiolvassa a tábla nevét
             if (self.tabla.GetCellValue(i,0)=="1"):
                 tabla_neve = self.tabla.GetCellValue(i,1)
                 sorok =  self.db.tabla_tartalma(tabla_neve)
-                csv_kiiro(file_neve=tabla_neve+".csv", sorok=sorok)
-                self.tabla.SetCellValue(i,0,"")
+                if sorok is None:
+                    self.uzenet_hiba("Nem sikerült beolvasni a kijelölt táblák tartalmát.", "Hiba")
+                    return
+                
+                tabla_kiirva = csv_kiiro(file_neve=tabla_neve+".csv", sorok=sorok)
+                if tabla_kiirva:
+                    self.tabla.SetCellValue(i,0,"")
+
+                sikerult = sikerult and tabla_kiirva
+
+        if sikerult:
+            self.uzenet_ok("A kijelölt táblák kiírva csv formában.", "Sikerült")
+        else:                    
+            self.uzenet_hiba("Nem sikerült a táblákat kiírni csv formában.", "Hiba")
 
     def tabla_kattintas_handler(self, event):
         """
@@ -107,3 +120,19 @@ class Foablak(wx.Frame):
                 self.tabla.SetCellValue(sor, oszlop, "")
             else:
                 self.tabla.SetCellValue(sor, oszlop, "1")
+
+
+    def uzenet_hiba(self, msg, title):
+        """
+        Hibaüzenet kiírása
+        """
+        wx.MessageBox(msg, title, wx.OK | wx.ICON_ERROR)
+
+
+    def uzenet_ok(self, msg, title):
+        """
+        Tájékoztató üzenet kiírása
+        """
+        wx.MessageBox(msg, title, wx.OK | wx.ICON_INFORMATION)
+
+        

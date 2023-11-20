@@ -15,10 +15,10 @@ git clone https://github.com/Szucs-Zsolt/teszt-hun.git
 - a telepítendő modulok a requirements.txt fájlban vannak.
 (mysql-connector-python==8.2.0, numpy==1.26.2, Pillow==10.1.0, protobuf==4.21.12, six==1.16.0, wxPython==4.2.1)
 ```
-    cd teszt-hun
-    py -3.9 -m venv venv
-    .\venv\Scripts\activate
-    python -m pip install -r requirements.txt	
+cd teszt-hun
+py -3.9 -m venv venv
+.\venv\Scripts\activate
+python -m pip install -r requirements.txt	
 ```
 
 3. Az adatbázishoz való kapcsolódáshoz szükséges adatok a .\config\mysql_connection.cfg fájlba kerülnek. A szükséges adatok:
@@ -36,7 +36,7 @@ jelszo
 ```
 4. A program elindítása után azonnal csatlakozik az adatbázishoz, megjeleníti az elérhető táblákat.
 ```
-    python main.py
+python main.py
 ```
 - Az első oszlop pipálható, itt lehet kiválasztani, hogy melyik táblát kívánjuk lementeni csv formában.
 - A második oszlopban látható a tábla neve.

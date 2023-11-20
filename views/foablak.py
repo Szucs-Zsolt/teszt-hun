@@ -3,6 +3,7 @@ import wx.grid
 from models.adatbazis import Adatbazis
 from models.csv_kezelo import csv_kiiro
 
+
 class Foablak(wx.Frame):
     """
     GUI létrehozása és megjelenítése: 
@@ -17,13 +18,13 @@ class Foablak(wx.Frame):
     def __init__(self, title, db):
         """
         A GUI Megkapja az adatbázis eléréséhez szükséges objectet és lekérdezi a 
-	táblák nevét.
+        táblák nevét.
 
         Paraméterek
             title:       ablak neve
             db:          kapcsolat az adatbázishoz 
         """
-        super().__init__(parent=None, title=title, size=(800,600))
+        super().__init__(parent=None, title=title, size=(800, 600))
 
         # Az adatbázisból lekérdezzük a táblák nevét
         self.db = db
@@ -41,12 +42,13 @@ class Foablak(wx.Frame):
         self.sizer = wx.BoxSizer(wx.VERTICAL)
 
         # 1. elem - fejléc felirata
-        felirat = wx.StaticText(self.panel, label="Adatbázis tábláinak lementése CSV formában")
+        felirat = wx.StaticText(
+            self.panel, label="Adatbázis tábláinak lementése CSV formában")
 
         # 2. elem - tábla (grid) létrehozása
         # Tábla általános kinézete
         self.tabla = wx.grid.Grid(self.panel)
-        self.tabla.CreateGrid(len(tablak_neve) ,2)
+        self.tabla.CreateGrid(len(tablak_neve), 2)
         self.tabla.SetColLabelValue(0, "Lementés")
         self.tabla.SetColLabelValue(1, "Tábla neve")
         self.tabla.SetSelectionMode(wx.grid.Grid.GridSelectNone)
@@ -65,17 +67,21 @@ class Foablak(wx.Frame):
 
         # 3. elem - gomb (a leírásban kifejezetten azt kérték, hogy a felirata 'Save' legyen)
         self.konvertalas_button = wx.Button(self.panel, label="Save")
-        
+
         # Elrendezése: az üresen maradó helyet a tábla teljesen kitölti
-        self.sizer.Add(felirat, proportion=0, flag=wx.ALIGN_CENTER | wx.BOTTOM | wx.TOP, border=20)
-        self.sizer.Add(self.tabla, proportion=1, flag=wx.EXPAND | wx.LEFT | wx.RIGHT | wx.BOTTOM, border = 20)
-        self.sizer.Add(self.konvertalas_button, proportion=0, flag= wx.EXPAND | wx.RIGHT | wx.BOTTOM, border=20)
-        
+        self.sizer.Add(felirat, proportion=0,
+                       flag=wx.ALIGN_CENTER | wx.BOTTOM | wx.TOP, border=20)
+        self.sizer.Add(self.tabla, proportion=1, flag=wx.EXPAND |
+                       wx.LEFT | wx.RIGHT | wx.BOTTOM, border=20)
+        self.sizer.Add(self.konvertalas_button, proportion=0,
+                       flag=wx.EXPAND | wx.RIGHT | wx.BOTTOM, border=20)
 
         # Gomblenyomás esetén meghívjuk a konvertáló metódust
-        self.panel.Bind(event=wx.EVT_BUTTON, source=self.konvertalas_button, handler=self.konvertalas_button_handler)
+        self.panel.Bind(event=wx.EVT_BUTTON, source=self.konvertalas_button,
+                        handler=self.konvertalas_button_handler)
         # Panel cellára való kattintás azonnal kijelöli a check boxot
-        self.tabla.Bind(wx.grid.EVT_GRID_CELL_LEFT_CLICK, self.tabla_kattintas_handler)
+        self.tabla.Bind(wx.grid.EVT_GRID_CELL_LEFT_CLICK,
+                        self.tabla_kattintas_handler)
 
         self.panel.SetSizer(self.sizer)
 
@@ -89,23 +95,27 @@ class Foablak(wx.Frame):
         sikerult = True
         for i in range(self.tabla.GetNumberRows()):
             # A bejelölt sorokból kiolvassa a tábla nevét
-            if (self.tabla.GetCellValue(i,0)=="1"):
-                tabla_neve = self.tabla.GetCellValue(i,1)
-                sorok =  self.db.tabla_tartalma(tabla_neve)
+            if (self.tabla.GetCellValue(i, 0) == "1"):
+                tabla_neve = self.tabla.GetCellValue(i, 1)
+                sorok = self.db.tabla_tartalma(tabla_neve)
                 if sorok is None:
-                    self.uzenet_hiba("Nem sikerült beolvasni a kijelölt táblák tartalmát.", "Hiba")
+                    self.uzenet_hiba(
+                        "Nem sikerült beolvasni a kijelölt táblák tartalmát.", "Hiba")
                     return
-                
-                tabla_kiirva = csv_kiiro(file_neve=tabla_neve+".csv", sorok=sorok)
+
+                tabla_kiirva = csv_kiiro(
+                    file_neve=tabla_neve+".csv", sorok=sorok)
                 if tabla_kiirva:
-                    self.tabla.SetCellValue(i,0,"")
+                    self.tabla.SetCellValue(i, 0, "")
 
                 sikerult = sikerult and tabla_kiirva
 
         if sikerult:
-            self.uzenet_ok("A kijelölt táblák kiírva csv formában.", "Sikerült")
-        else:                    
-            self.uzenet_hiba("Nem sikerült a táblákat kiírni csv formában.", "Hiba")
+            self.uzenet_ok(
+                "A kijelölt táblák kiírva csv formában.", "Sikerült")
+        else:
+            self.uzenet_hiba(
+                "Nem sikerült a táblákat kiírni csv formában.", "Hiba")
 
     def tabla_kattintas_handler(self, event):
         """
@@ -121,18 +131,14 @@ class Foablak(wx.Frame):
             else:
                 self.tabla.SetCellValue(sor, oszlop, "1")
 
-
     def uzenet_hiba(self, msg, title):
         """
         Hibaüzenet kiírása
         """
         wx.MessageBox(msg, title, wx.OK | wx.ICON_ERROR)
 
-
     def uzenet_ok(self, msg, title):
         """
         Tájékoztató üzenet kiírása
         """
         wx.MessageBox(msg, title, wx.OK | wx.ICON_INFORMATION)
-
-        

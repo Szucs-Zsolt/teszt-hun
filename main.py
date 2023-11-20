@@ -10,6 +10,7 @@ from models.adatbazis import Adatbazis
 from models.csv_kezelo import csv_kiiro
 from views.foablak import Foablak
 
+
 def main():
     """
     Az előkészítés során az adatbáziskezelő betölti a konfigurációs 
@@ -22,5 +23,5 @@ def main():
     app.MainLoop()
 
 
-if __name__=="__main__":
+if __name__ == "__main__":
     main()

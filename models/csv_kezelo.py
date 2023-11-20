@@ -1,5 +1,6 @@
 import csv
 
+
 def csv_kiiro(file_neve, sorok):
     """
     Kiírja a kapott sorok tartalmát fájlba, csv formában.
@@ -15,6 +16,6 @@ def csv_kiiro(file_neve, sorok):
             writer = csv.writer(f)
             for sor in sorok:
                 writer.writerow(sor)
-            return True    
+            return True
     except Exception as e:
         return False

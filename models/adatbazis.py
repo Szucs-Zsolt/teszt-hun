@@ -1,5 +1,6 @@
 import mysql.connector
 
+
 class Adatbazis:
     def __init__(self, config_file):
         """
@@ -27,31 +28,33 @@ class Adatbazis:
             print(f"Hiányzó konfigurációs fájl: {config_file}")
             exit()
         except Exception as e:
-            print("Hiba: ", e)    
+            print("Hiba: ", e)
             exit()
 
     def kapcsolat_megnyitasa(self):
         """
         A már beolvasott adatok alapján kapcsolódik az adatbázishoz.
         A self.cursor ezután már használható.
-        
+
         Visszaadott érték:
             True:  sikerült a kapcsolódás
             False: nem sikerült kapcsolódni az adatbázishoz
         """
         try:
             self.connection = mysql.connector.connect(
-                host = self.host,
-                database = self.database,
-                user = self.user,
-                password = self.password
+                host=self.host,
+                database=self.database,
+                user=self.user,
+                password=self.password
             )
             self.cursor = self.connection.cursor()
             return True
         except mysql.connector.errors.ProgrammingError:
-            print(f"Hiba: Az adatbázisnév - felhasználónév - jelszó kombinácó hibás. (host: {self.host}, adatbázis: {self.database})")
+            print(
+                f"Hiba: Az adatbázisnév - felhasználónév - jelszó kombinácó hibás. (host: {self.host}, adatbázis: {self.database})")
         except mysql.connector.errors.DatabaseError:
-            print(f"Hiba: Nem sikerült kapcsolódni a szerverhez: host: {self.host}")
+            print(
+                f"Hiba: Nem sikerült kapcsolódni a szerverhez: host: {self.host}")
         except Exception as e:
             print("Hiba:", e)
 
@@ -80,14 +83,13 @@ class Adatbazis:
             table_names = self.cursor.fetchall()
             table_name_list = []
             for name in table_names:
-                table_name_list.append(list(name)[0])    
+                table_name_list.append(list(name)[0])
         except Exception as e:
             print("Hiba:", e)
         finally:
             self.kapcsolat_bezarasa()
 
         return table_name_list
-
 
     def tabla_tartalma(self, tabla_neve):
         """

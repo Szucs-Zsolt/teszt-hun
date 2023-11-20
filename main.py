@@ -11,12 +11,16 @@ from models.csv_kezelo import csv_kiiro
 from views.foablak import Foablak
 
 def main():
-    # Az adatbáziskezelő a konfigurációs fájlból betölti a kapcsolat adatait
+    """
+    Az előkészítés során az adatbáziskezelő betölti a konfigurációs 
+    fájlból a szükséges adatokat, majd elindul a program.
+    """
     db = Adatbazis(config_file=".\\config\\mysql_connection.cfg")
 
     app = wx.App()
     foablak = Foablak("MySQL - CSV lementés", db)
     app.MainLoop()
+
 
 if __name__=="__main__":
     main()
